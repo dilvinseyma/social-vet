@@ -15,4 +15,7 @@ public interface AnimalRepository extends CrudRepository<Animal, Long>{
 	
 	@Query(value = "SELECT * FROM ANIMAL WHERE PETSITTER_USERNAME = :petSitterUsername", nativeQuery = true)
 	public List<Animal> findAnimalsByPetSitterUsername(@Param("petSitterUsername") String petSitterUsername);
+
+	@Query(value = "SELECT * FROM ANIMAL WHERE STATUS = true", nativeQuery = true)
+	public List<Animal> findAllActiveAnimals();
 }

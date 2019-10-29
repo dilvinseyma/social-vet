@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,7 +25,7 @@ public class AnimalController {
 	
 	@RequestMapping(value = "/animals", method = RequestMethod.GET)
 	public ResponseEntity<List<Animal>> getAnimals() {
-		return new ResponseEntity<>((List<Animal>) animalRepository.findAll(), HttpStatus.OK);
+		return new ResponseEntity<>((List<Animal>) animalRepository.findAllActiveAnimals(), HttpStatus.OK);
 	}
 
 	// also used for update, when id present in request
@@ -37,7 +36,8 @@ public class AnimalController {
 	}
 	
 	@RequestMapping(value = "/deleteanimal", method = RequestMethod.POST)
-	public ResponseEntity<?> deleteAnimal(@RequestParam Long id){
+	public ResponseEntity<?> deleteAnimal(@RequestBody JsonNode request){
+		Long id = request.findValue("id").asLong();
 		
 		Optional<Animal> animalToDelete = animalRepository.findById(id);
 		
